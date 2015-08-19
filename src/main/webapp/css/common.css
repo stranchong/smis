@@ -1,0 +1,19 @@
+.onFocus {
+	box-shadow: 0 0 10px #2D46AE;
+}
+
+body {
+	width: 100%;
+	background: url(../images/back3.jpg) no-repeat;
+	background-position: 50% 50%;
+	background-size: 100%;
+	color: #333333;
+}
+
+* {
+	list-style: none;
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+}
+

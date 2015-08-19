@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smis.dao.TeacherMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.Teacher">
+		<id column="tid" jdbcType="VARCHAR" property="tid" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="tname" jdbcType="VARCHAR" property="tname" />
+		<result column="is_manager" jdbcType="BIT" property="isManager" />
+		<result column="is_teacher" jdbcType="BIT" property="isTeacher" />
+		<result column="rid" jdbcType="BIGINT" property="rid" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		tid, password, tname, is_manager, is_teacher, rid
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from teacher
+		where tid = #{tid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from teacher
+		where tid = #{tid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.Teacher">
+		insert into teacher (tid, password, tname,
+		is_manager, is_teacher, rid)
+		values
+		(#{tid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{tname,jdbcType=VARCHAR},
+		#{isManager,jdbcType=BIT},
+		#{isTeacher,jdbcType=BIT}, #{rid,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.Teacher">
+		insert into teacher
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tid != null">
+				tid,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="tname != null">
+				tname,
+			</if>
+			<if test="isManager != null">
+				is_manager,
+			</if>
+			<if test="isTeacher != null">
+				is_teacher,
+			</if>
+			<if test="rid != null">
+				rid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tid != null">
+				#{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="tname != null">
+				#{tname,jdbcType=VARCHAR},
+			</if>
+			<if test="isManager != null">
+				#{isManager,jdbcType=BIT},
+			</if>
+			<if test="isTeacher != null">
+				#{isTeacher,jdbcType=BIT},
+			</if>
+			<if test="rid != null">
+				#{rid,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.Teacher">
+		update teacher
+		<set>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="tname != null">
+				tname = #{tname,jdbcType=VARCHAR},
+			</if>
+			<if test="isManager != null">
+				is_manager = #{isManager,jdbcType=BIT},
+			</if>
+			<if test="isTeacher != null">
+				is_teacher = #{isTeacher,jdbcType=BIT},
+			</if>
+			<if test="rid != null">
+				rid = #{rid,jdbcType=BIGINT},
+			</if>
+		</set>
+		where tid = #{tid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.Teacher">
+		update teacher
+		set password = #{password,jdbcType=VARCHAR},
+		tname =
+		#{tname,jdbcType=VARCHAR},
+		is_manager = #{isManager,jdbcType=BIT},
+		is_teacher = #{isTeacher,jdbcType=BIT},
+		rid =
+		#{rid,jdbcType=BIGINT}
+		where tid = #{tid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- *****************自定义的resultMap****************** -->
+	<!-- Teacher、Role -->
+	<resultMap id="teacherRoleResultMap" type="com.smis.model.Teacher" extends="BaseResultMap">
+		<association property="role" javaType="com.smis.model.Role">
+			<result property="permission" column="permission" />
+		</association>
+	</resultMap>
+
+	<!-- Teacher、Faculyt、Level -->
+	<resultMap id="teacherInfoResultMap" type="com.smis.model.Teacher" extends="BaseResultMap">
+		<association property="faculty" javaType="com.smis.model.Faculty">
+			<result property="fid" column="fid" />
+			<result property="fname" column="fname" />
+		</association>
+		<association property="level" javaType="com.smis.model.Level">
+			<result property="lid" column="lid" />
+			<result property="lname" column="lname" />
+			<result property="rank" column="rank" />
+		</association>
+		
+	</resultMap>
+
+	<!-- ****** teacher ***** -->
+	<!-- 单个教职工Teacher、Role信息 -->
+	<select id="selectTeacherRoleByPrimaryKey" resultMap="teacherRoleResultMap" parameterType="java.lang.String">
+		SELECT
+		teacher.tid,
+		teacher.tname,
+		teacher.`password`,
+		role.permission
+		FROM
+		teacher
+		INNER JOIN role ON teacher.rid = role.rid
+		where
+		teacher.tid =
+		#{tid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 单个教职工Teacher、Faculty、Level信息 -->
+	<select id="selectTeacherInfoByPrimaryKey" resultMap="teacherInfoResultMap" parameterType="java.lang.String">
+		SELECT
+		teacher.tname,
+		teacher.is_manager,
+		teacher.is_teacher,
+		faculty.fname,
+		`level`.rank,
+		`level`.lname
+		FROM
+		teacher
+		INNER JOIN
+		faculty_level ON
+		faculty_level.tid = teacher.tid
+		INNER JOIN faculty ON faculty_level.fid = faculty.fid
+		INNER JOIN `level`
+		ON
+		faculty_level.lid = `level`.lid
+		where
+		teacher.tid =
+		#{tid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 单个教职工获取上一级的管理自己的所有教职工 -->
+	<select id="selectSuperiorTeacherByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		teacher.tid,
+		teacher.tname
+		FROM
+		faculty_level
+		INNER JOIN teacher ON faculty_level.parent_tid = teacher.tid
+		WHERE
+		faculty_level.tid =
+		#{tid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- ******** student ******* -->
+	<!-- 根据sid查找管理该学生的所有中队长 -->
+	<select id="selectAllManageTeachersBySid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		teacher.tid,
+		teacher.tname
+		FROM
+		student
+		INNER JOIN manage_class ON student.clid = manage_class.clid
+		INNER JOIN teacher ON
+		manage_class.tid = teacher.tid
+		WHERE
+		student.sid = #{sid,jdbcType=VARCHAR}
+	</select>
+
+
+
+	<!-- ******* manager ******* -->
+	<!-- 分页的教职工信息 -->
+	<select id="selectPageTeacher" resultMap="BaseResultMap" parameterType="com.smis.dto.PageInfo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM teacher
+		LIMIT #{currentPage},#{pageSize}
+	</select>
+
+	<!-- 所有的教职工信息 -->
+	<select id="selectAllTeacher" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM teacher
+	</select>
+
+</mapper>

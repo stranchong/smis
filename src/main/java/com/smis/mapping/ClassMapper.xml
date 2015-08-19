@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smis.dao.ClassMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.Class">
+		<id column="clid" jdbcType="VARCHAR" property="clid" />
+		<result column="clname" jdbcType="VARCHAR" property="clname" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		clid, clname
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from class
+		where clid = #{clid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from class
+		where clid = #{clid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.Class">
+		insert into class (clid, clname)
+		values (#{clid,jdbcType=VARCHAR},
+		#{clname,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.Class">
+		insert into class
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="clid != null">
+				clid,
+			</if>
+			<if test="clname != null">
+				clname,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="clid != null">
+				#{clid,jdbcType=VARCHAR},
+			</if>
+			<if test="clname != null">
+				#{clname,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.Class">
+		update class
+		<set>
+			<if test="clname != null">
+				clname = #{clname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where clid = #{clid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.Class">
+		update class
+		set clname = #{clname,jdbcType=VARCHAR},
+		where clid =
+		#{clid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 自定义的sql片段 -->
+	<sql id="where_equal_like">
+		<where>
+			<if test="clid != null">
+				AND class.clid LIKE CONCAT('%', #{clid,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="clname != null">
+				AND class.clname LIKE CONCAT('%', #{clname,jdbcType=VARCHAR}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="select_where_equal_like_and_order_limit">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM class
+		<include refid="where_equal_like" />
+		<if test="orderColumn != null and order != null">
+			ORDER BY #{orderColumn} #{order}
+		</if>
+		<if test="currRecordIndex != null and pageSize != null">
+			LIMIT #{currRecordIndex},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 模糊查询分页的班级信息 -->
+	<select id="selectPageClasses" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="select_where_equal_like_and_order_limit" />
+	</select>
+
+	<select id="getClassTotalCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT
+		count(1)
+		FROM
+		class
+		<include refid="where_equal_like" />
+	</select>
+
+	<!-- 查询班级信息 -->
+	<select id="selectAllClasses" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="select_where_equal_like_and_order_limit" />
+	</select>
+
+	<!-- ******* teacher ******** -->
+	<select id="selectAllClassesByTid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		class.clname
+		FROM
+		class
+		INNER JOIN
+		teach_class ON teach_class.clid = class.clid
+		where teach_class.tid = #{tid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectAllClassesByCid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT DISTINCT
+		class.clid,
+		class.clname
+		FROM
+		class
+		INNER JOIN student ON student.clid = class.clid
+		INNER JOIN student_course ON student_course.sid =
+		student.sid
+		where student_course.cid = #{cid,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

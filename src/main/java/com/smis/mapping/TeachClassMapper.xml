@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smis.dao.TeachClassMapper" >
+  <resultMap id="BaseResultMap" type="com.smis.model.TeachClassKey" >
+    <id column="tid" property="tid" jdbcType="VARCHAR" />
+    <id column="clid" property="clid" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.smis.model.TeachClassKey" >
+    delete from teach_class
+    where tid = #{tid,jdbcType=VARCHAR}
+      and clid = #{clid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.smis.model.TeachClassKey" >
+    insert into teach_class (tid, clid)
+    values (#{tid,jdbcType=VARCHAR}, #{clid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smis.model.TeachClassKey" >
+    insert into teach_class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="clid != null" >
+        clid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="clid != null" >
+        #{clid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

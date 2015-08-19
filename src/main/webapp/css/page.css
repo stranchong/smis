@@ -1,0 +1,173 @@
+* {
+	list-style: none;
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+a {
+	color: #FFFFFF;
+}
+
+.onFocus {
+	box-shadow: 0 0 10px #2D46AE;
+}
+
+#topMenu {
+	height: 5%;
+	width: 99%;
+	clear: both;
+	margin: 1% 1%;
+	font: 15px 宋体;
+	color: #FFFFFF
+}
+
+#topMenu div {
+	float: left;
+}
+
+#topMenu span {
+	margin: 5px auto;
+}
+
+#topMenu .search {
+	width: 80%;
+	height: 100%;
+}
+
+#topMenu .search input {
+	line-height: 20px;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	-moz-border-radius: 4px; /* Old Firefox */
+}
+
+#topMenu .search select {
+	padding: 2px;
+	border-radius: 4px;
+	-moz-border-radius: 4px; /* Old Firefox */
+}
+
+#topMenu #search_btn {
+	width: 55px;
+	height: 25px;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	background: rgba(0, 0, 0, 0.4);
+	color: #FFFFFF;
+	cursor: pointer;
+	font: 15px 宋体;
+}
+
+#topMenu .add {
+	width: 20%;
+	height: 100%;
+}
+
+#topMenu .add span {
+	float: right;
+	height: 25px;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.4);
+	color: #FFFFFF;
+	margin: 0px 15px 0px 0px;
+	text-align: center;
+	line-height: 25px;
+}
+
+#topMenu .add a {
+	padding: 6px 8px;
+}
+
+#tableMain {
+	width: 100%;
+	height: 79%;
+	overflow-y: auto;
+}
+
+#tableMain .center-table {
+	width: 99%;
+	font-size: 13px;
+	margin: 0px auto;
+	color: #FFFFFF;
+}
+
+#tableMain .center-table th {
+	line-height: 35px;
+	background: rgba(0, 0, 0, 0.4);
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	border-right: 0px;
+}
+
+#tableMain .center-table tbody tr:hover {
+	background: rgba(128, 128, 160, 0.4);
+}
+
+#tableMain .center-table td {
+	line-height: 35px;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	border-right: 0px;
+	border-top: 0px;
+}
+
+#tableMain .center-table .even {
+	background: rgba(205, 92, 92, 0.4);
+}
+
+#tableMain #clearTDrightBorder {
+	border-right: 1px rgba(0, 0, 0, 0.4) solid;
+	text-align: center;
+}
+
+#tableMain #clearTDrightBorder span {
+	line-height: 20px;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.4);
+	display: inline-block;
+}
+
+#page {
+	text-align: center;
+	margin-top: 10px;
+	color: #FFFFFF;
+}
+
+#page ul {
+	display: inline-block;
+}
+
+#page ul li {
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 4px;
+	-moz-border-radius: 4px; /* Old Firefox */
+	margin-left: 5px;
+	float: left;
+}
+
+#page div {
+	display: inline-block;
+	position: relative;
+	top: -8px;
+}
+
+#page input {
+	width: 55px;
+	height: 24px;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+
+#page #jump_btn {
+	height: 25px;
+	border: 1px rgba(0, 0, 0, 0.4) solid;
+	background: rgba(0, 0, 0, 0.4);
+	color: #FFFFFF;
+	cursor: pointer;
+	font: 15px 宋体;
+}

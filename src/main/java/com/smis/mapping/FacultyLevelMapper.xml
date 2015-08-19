@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smis.dao.FacultyLevelMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.FacultyLevel">
+		<id column="fid" jdbcType="INTEGER" property="fid" />
+		<id column="lid" jdbcType="INTEGER" property="lid" />
+		<id column="tid" jdbcType="VARCHAR" property="tid" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		fid, lid, tid, parent_id
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="com.smis.model.FacultyLevelKey" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from faculty_level
+		where fid = #{fid,jdbcType=INTEGER}
+		and lid = #{lid,jdbcType=INTEGER}
+		and tid = #{tid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="com.smis.model.FacultyLevelKey">
+		delete from faculty_level
+		where fid = #{fid,jdbcType=INTEGER}
+		and lid = #{lid,jdbcType=INTEGER}
+		and tid = #{tid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.FacultyLevel">
+		insert into faculty_level (fid, lid, tid,
+		parent_id)
+		values (#{fid,jdbcType=INTEGER}, #{lid,jdbcType=INTEGER}, #{tid,jdbcType=VARCHAR},
+		#{parentId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.FacultyLevel">
+		insert into faculty_level
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				fid,
+			</if>
+			<if test="lid != null">
+				lid,
+			</if>
+			<if test="tid != null">
+				tid,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				#{fid,jdbcType=INTEGER},
+			</if>
+			<if test="lid != null">
+				#{lid,jdbcType=INTEGER},
+			</if>
+			<if test="tid != null">
+				#{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.FacultyLevel">
+		update faculty_level
+		<set>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where fid = #{fid,jdbcType=INTEGER}
+		and lid = #{lid,jdbcType=INTEGER}
+		and tid = #{tid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.FacultyLevel">
+		update faculty_level
+		set parent_id = #{parentId,jdbcType=INTEGER}
+		where fid = #{fid,jdbcType=INTEGER}
+		and lid = #{lid,jdbcType=INTEGER}
+		and tid = #{tid,jdbcType=VARCHAR}
+	</update>
+</mapper>

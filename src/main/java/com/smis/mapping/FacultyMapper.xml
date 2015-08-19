@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sy.dao.FacultyMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.Faculty">
+		<id column="fid" jdbcType="INTEGER" property="fid" />
+		<result column="fname" jdbcType="VARCHAR" property="fname" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		fid, fname
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from faculty
+		where fid = #{fid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from faculty
+		where fid = #{fid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.Faculty">
+		insert into faculty (fid, fname)
+		values (#{fid,jdbcType=INTEGER},
+		#{fname,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.Faculty">
+		insert into faculty
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				fid,
+			</if>
+			<if test="fname != null">
+				fname,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				#{fid,jdbcType=INTEGER},
+			</if>
+			<if test="fname != null">
+				#{fname,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.Faculty">
+		update faculty
+		<set>
+			<if test="fname != null">
+				fname = #{fname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where fid = #{fid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.Faculty">
+		update faculty
+		set fname = #{fname,jdbcType=VARCHAR}
+		where fid =
+		#{fid,jdbcType=INTEGER}
+	</update>
+</mapper>

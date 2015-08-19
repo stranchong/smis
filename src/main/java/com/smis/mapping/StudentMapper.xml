@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smis.dao.StudentMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.Student">
+		<id column="sid" jdbcType="VARCHAR" property="sid" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="sname" jdbcType="VARCHAR" property="sname" />
+		<result column="clid" jdbcType="VARCHAR" property="clid" />
+		<result column="rid" jdbcType="BIGINT" property="rid" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		sid, sname, password, clid, rid
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from student
+		where sid = #{sid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from student
+		where sid = #{sid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.Student">
+		insert into student (sid, password, sname,
+		clid, rid)
+		values
+		(#{sid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR},
+		#{clid,jdbcType=VARCHAR},
+		#{rid,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.Student">
+		insert into student
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sid != null">
+				sid,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="sname != null">
+				sname,
+			</if>
+			<if test="clid != null">
+				clid,
+			</if>
+			<if test="rid != null">
+				rid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sid != null">
+				#{sid,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="sname != null">
+				#{sname,jdbcType=VARCHAR},
+			</if>
+			<if test="clid != null">
+				#{clid,jdbcType=VARCHAR},
+			</if>
+			<if test="rid != null">
+				#{rid,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.Student">
+		update student
+		<set>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="sname != null">
+				sname = #{sname,jdbcType=VARCHAR},
+			</if>
+			<if test="clid != null">
+				clid = #{clid,jdbcType=VARCHAR},
+			</if>
+			<if test="rid != null">
+				rid = #{rid,jdbcType=BIGINT},
+			</if>
+		</set>
+		where sid = #{sid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.Student">
+		update student
+		set password = #{password,jdbcType=VARCHAR},
+		sname =
+		#{sname,jdbcType=VARCHAR},
+		clid = #{clid,jdbcType=VARCHAR},
+		rid = #{rid,jdbcType=BIGINT}
+		where sid =
+		#{sid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- *****************自定义的resultMap****************** -->
+	<!-- Student、Role -->
+	<resultMap id="studentRoleResultMap" type="com.smis.model.Student" extends="BaseResultMap">
+		<association property="role" javaType="com.smis.model.Role">
+			<result property="permission" column="permission" />
+		</association>
+	</resultMap>
+
+	<!-- Student、Class -->
+	<resultMap id="studentInfoResultMap" type="com.smis.model.Student" extends="BaseResultMap">
+		<association property="clazz" javaType="com.smis.model.Class">
+			<result property="clname" column="clname" />
+		</association>
+	</resultMap>
+
+	<!-- ******************自定义的CRUD****************** -->
+	<!-- 单个学生Student、Role信息 -->
+	<select id="selectStudentRoleByPrimaryKey" resultMap="studentRoleResultMap" parameterType="java.lang.String">
+		SELECT
+		student.sid,
+		student.`password`,
+		student.sname,
+		student.rid,
+		role.permission
+		FROM
+		student
+		INNER JOIN role ON student.rid = role.rid
+		where
+		student.sid =
+		#{sid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 单个学生Student、Class信息 -->
+	<select id="selectStudentInfoByPrimaryKey" resultMap="studentInfoResultMap" parameterType="java.lang.String">
+		SELECT
+		student.sid,
+		student.sname,
+		class.clname
+		FROM
+		student
+		INNER JOIN class ON student.clid = class.clid
+		where student.sid =
+		#{sid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- ******* teacher ******** -->
+	<!-- 根据clid查询该班级的所有学生 -->
+	<select id="selectAllStudentsByClid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		student.sid,
+		student.sname
+		FROM
+		student
+		WHERE
+		student.clid =
+		#{clid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- manager -->
+	<!-- 查询条件：相等、模糊 -->
+	<sql id="where_equal_like">
+		<where>
+			<if test="sid != null">
+				AND student.sid LIKE CONCAT('%', #{sid,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="sname !=null ">
+				AND student.sname LIKE CONCAT('%', #{sname,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="clid != null">
+				AND student.clid = #{clid,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectPageStudents" resultMap="studentInfoResultMap" parameterType="java.util.Map">
+		SELECT
+		student.sid,
+		student.sname,
+		class.clid,
+		class.clname
+		FROM
+		student
+		INNER JOIN class ON student.clid = class.clid
+		<include refid="where_equal_like" />
+		ORDER BY #{orderColumn} #{order}
+		LIMIT
+		#{currRecordIndex},#{pageSize}
+	</select>
+
+	<select id="getStudentTotalCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT
+		count(1)
+		FROM
+		student
+		<include refid="where_equal_like" />
+	</select>
+
+</mapper>

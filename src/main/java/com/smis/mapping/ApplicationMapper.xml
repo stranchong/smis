@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smis.dao.ApplicationMapper">
+	<resultMap id="BaseResultMap" type="com.smis.model.Application">
+		<id column="aid" jdbcType="BIGINT" property="aid" />
+		<result column="sid" jdbcType="VARCHAR" property="sid" />
+		<result column="create_date" jdbcType="DATE" property="createDate" />
+		<result column="start_date" jdbcType="DATE" property="startDate" />
+		<result column="over_date" jdbcType="DATE" property="overDate" />
+		<result column="count_day" jdbcType="INTEGER" property="countDay" />
+		<result column="leave_reason" jdbcType="VARCHAR" property="leaveReason" />
+		<result column="leave_place" jdbcType="VARCHAR" property="leavePlace" />
+		<result column="confirm_mark" jdbcType="INTEGER" property="confirmMark" />
+		<result column="confirm_tid" jdbcType="VARCHAR" property="confirmTid" />
+		<result column="confirm_name" jdbcType="VARCHAR" property="confirmName" />
+		<result column="confirm_reply" jdbcType="VARCHAR" property="confirmReply" />
+		<result column="confirm_date" jdbcType="DATE" property="confirmDate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		aid, sid, create_date, start_date, over_date, count_day, leave_reason, leave_place,
+		confirm_mark,
+		confirm_tid, confirm_name, confirm_reply, confirm_date
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from application
+		where aid = #{aid,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from application
+		where aid = #{aid,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.smis.model.Application">
+		insert into application (aid, sid, create_date,
+		start_date, over_date,
+		count_day,
+		leave_reason, leave_place, confirm_mark,
+		confirm_tid, confirm_name, confirm_reply,
+		confirm_date)
+		values
+		(#{aid,jdbcType=BIGINT}, #{sid,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE},
+		#{startDate,jdbcType=DATE},
+		#{overDate,jdbcType=DATE}, #{countDay,jdbcType=INTEGER},
+		#{leaveReason,jdbcType=VARCHAR},
+		#{leavePlace,jdbcType=VARCHAR}, #{confirmMark,jdbcType=INTEGER},
+		#{confirmTid,jdbcType=VARCHAR},
+		#{confirmName,jdbcType=VARCHAR}, #{confirmReply,jdbcType=VARCHAR},
+		#{confirmDate,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.smis.model.Application" useGeneratedKeys="true" keyProperty="aid">
+		insert into application
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="aid != null">
+				aid,
+			</if>
+			<if test="sid != null">
+				sid,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="startDate != null">
+				start_date,
+			</if>
+			<if test="overDate != null">
+				over_date,
+			</if>
+			<if test="countDay != null">
+				count_day,
+			</if>
+			<if test="leaveReason != null">
+				leave_reason,
+			</if>
+			<if test="leavePlace != null">
+				leave_place,
+			</if>
+			<if test="confirmMark != null">
+				confirm_mark,
+			</if>
+			<if test="confirmTid != null">
+				confirm_tid,
+			</if>
+			<if test="confirmName != null">
+				confirm_name,
+			</if>
+			<if test="confirmReply != null">
+				confirm_reply,
+			</if>
+			<if test="confirmDate != null">
+				confirm_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="aid != null">
+				#{aid,jdbcType=BIGINT},
+			</if>
+			<if test="sid != null">
+				#{sid,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=DATE},
+			</if>
+			<if test="startDate != null">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="overDate != null">
+				#{overDate,jdbcType=DATE},
+			</if>
+			<if test="countDay != null">
+				#{countDay,jdbcType=INTEGER},
+			</if>
+			<if test="leaveReason != null">
+				#{leaveReason,jdbcType=VARCHAR},
+			</if>
+			<if test="leavePlace != null">
+				#{leavePlace,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmMark != null">
+				#{confirmMark,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTid != null">
+				#{confirmTid,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmName != null">
+				#{confirmName,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmReply != null">
+				#{confirmReply,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmDate != null">
+				#{confirmDate,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.smis.model.Application">
+		update application
+		<set>
+			<if test="sid != null">
+				sid = #{sid,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=DATE},
+			</if>
+			<if test="startDate != null">
+				start_date = #{startDate,jdbcType=DATE},
+			</if>
+			<if test="overDate != null">
+				over_date = #{overDate,jdbcType=DATE},
+			</if>
+			<if test="countDay != null">
+				count_day = #{countDay,jdbcType=INTEGER},
+			</if>
+			<if test="leaveReason != null">
+				leave_reason = #{leaveReason,jdbcType=VARCHAR},
+			</if>
+			<if test="leavePlace != null">
+				leave_place = #{leavePlace,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmMark != null">
+				confirm_mark = #{confirmMark,jdbcType=INTEGER},
+			</if>
+			<if test="confirmTid != null">
+				confirm_tid = #{confirmTid,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmName != null">
+				confirm_name = #{confirmName,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmReply != null">
+				confirm_reply = #{confirmReply,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmDate != null">
+				confirm_date = #{confirmDate,jdbcType=DATE},
+			</if>
+		</set>
+		where aid = #{aid,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.smis.model.Application">
+		update application
+		set sid = #{sid,jdbcType=VARCHAR},
+		create_date =
+		#{createDate,jdbcType=DATE},
+		start_date = #{startDate,jdbcType=DATE},
+		over_date = #{overDate,jdbcType=DATE},
+		count_day =
+		#{countDay,jdbcType=INTEGER},
+		leave_reason = #{leaveReason,jdbcType=VARCHAR},
+		leave_place =
+		#{leavePlace,jdbcType=VARCHAR},
+		confirm_mark = #{confirmMark,jdbcType=INTEGER},
+		confirm_tid =
+		#{confirmTid,jdbcType=VARCHAR},
+		confirm_name = #{confirmName,jdbcType=VARCHAR},
+		confirm_reply =
+		#{confirmReply,jdbcType=VARCHAR},
+		confirm_date = #{confirmDate,jdbcType=DATE}
+		where aid = #{aid,jdbcType=BIGINT}
+	</update>
+
+	<!-- 查询条件：相等、模糊 -->
+	<sql id="select_equal_like">
+		<where>
+			<if test="sid !=null ">
+				application.sid = #{sid,jdbcType=VARCHAR}
+			</if>
+			<if test="tid !=null ">
+				teacher_application.tid = #{tid,jdbcType=VARCHAR}
+			</if>
+			<if test="create_date != null">
+				AND application.create_date LIKE CONCAT('%', #{createDate,jdbcType=DATE}, '%')
+			</if>
+			<if test="start_date != null ">
+				AND application.start_date LIKE CONCAT('%', #{start_date,jdbcType=DATE}, '%')
+			</if>
+			<if test="over_date != null">
+				AND application.over_date LIKE CONCAT('%', #{over_date,jdbcType=DATE}, '%')
+			</if>
+			<if test="count_day != null">
+				AND application.count_day LIKE CONCAT('%', #{count_day,jdbcType=INTEGER}, '%')
+			</if>
+			<if test="leave_reason != null">
+				AND application.leave_reason LIKE CONCAT('%', #{leave_reason,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="leave_place != null">
+				AND application.leave_place LIKE CONCAT('%', #{leave_place,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="confirm_mark != null">
+				AND application.confirm_mark LIKE CONCAT('%', #{confirm_mark,jdbcType=INTEGER}, '%')
+			</if>
+			<if test="confirm_name != null">
+				AND application.confirm_name LIKE CONCAT('%', #{confirm_name,jdbcType=VARCHAR}, '%')
+			</if>
+			<if test="confirm_date != null">
+				AND application.confirm_date LIKE CONCAT('%', #{confirm_date,jdbcType=DATE}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<!-- 返回结果类型 -->
+	<resultMap id="applicationResultMap" type="com.smis.model.Application" extends="BaseResultMap">
+		<result property="sname" column="sname" jdbcType="VARCHAR" />
+		<result property="clname" column="clname" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- **************************** student ******************************* -->
+	<!-- 根据sid查询分页的请假信息 -->
+	<select id="selectPageApplicationsBySid" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT
+		application.aid,
+		application.create_date,
+		application.start_date,
+		application.over_date,
+		application.count_day,
+		application.leave_reason,
+		application.leave_place,
+		application.confirm_mark,
+		application.confirm_name,
+		application.confirm_reply,
+		application.confirm_date
+		FROM
+		application
+		<include refid="select_equal_like" />
+		ORDER BY
+		application.create_date DESC
+		LIMIT
+		#{currRecordIndex},#{pageSize}
+	</select>
+
+	<!-- 根据sid获取请假信息的总记录条数 -->
+	<select id="getApplicationTotalCountBySid" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT
+		count(1)
+		FROM
+		application
+		<include refid="select_equal_like" />
+	</select>
+
+	<!-- 根据sid获取最新审核状态不是不同意的请假信息 -->
+	<select id="selectLastApplicationBySid" resultMap="BaseResultMap">
+		SELECT
+		Max(application.over_date) over_date
+		FROM
+		application
+		WHERE
+		application.sid =
+		#{sid,jdbcType=VARCHAR}
+		AND application.confirm_mark <![CDATA[<>]]> 3
+	</select>
+
+	<!-- **************************** teacher ******************************* -->
+
+	<!-- 根据tid查询分页的教师审批或未审批的请假信息 -->
+	<select id="selectPageStudentApplicationsByTid" resultMap="applicationResultMap" parameterType="java.util.Map">
+		SELECT
+		application.aid,
+		application.create_date,
+		application.start_date,
+		application.over_date,
+		application.count_day,
+		application.leave_reason,
+		application.leave_place,
+		application.confirm_mark,
+		application.confirm_name,
+		application.confirm_reply,
+		application.confirm_date,
+		student.sname,
+		class.clname
+		FROM
+		application
+		INNER JOIN student ON
+		application.sid = student.sid
+		INNER JOIN class ON student.clid = class.clid
+		INNER JOIN teacher_application ON
+		teacher_application.aid = application.aid
+		<include refid="select_equal_like" />
+		ORDER BY
+		application.create_date DESC
+		LIMIT
+		#{currRecordIndex},#{pageSize}
+	</select>
+
+	<!-- 根据tid获取教师审批或未审批请假信息的总记录条数 -->
+	<select id="getStudentApplicationTotalCountByTid" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT
+		count(1)
+		FROM
+		teacher_application
+		<include refid="select_equal_like" />
+	</select>
+
+	<!-- **************************** manager ******************************* -->
+
+	<!-- 查询分页的请假信息 -->
+	<select id="selectPageApplication" resultMap="applicationResultMap" parameterType="com.smis.dto.PageInfo">
+		LIMIT
+		#{currentPage},#{pageSize}
+	</select>
+	<!-- 查询所有的请假信息 -->
+	<select id="selectAllApplication" resultMap="applicationResultMap">
+	</select>
+
+</mapper>
